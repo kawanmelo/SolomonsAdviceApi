@@ -11,7 +11,7 @@ namespace SolomonsAdviceApi.RandomAdvice.Endpoints{
         public static IResult AcaoAdviceRandom(){
             SolomonAdviceRepository adviceRepository = new SolomonAdviceRepository();
             Random random = new Random();
-            SolomonAdvice solomonAdviceFound = adviceRepository.ProverbsBank[random.Next(0, adviceRepository.ProverbsBank.Count)];
+            SolomonAdvice solomonAdviceFound = adviceRepository.ConsumeDataProverbsBank($"SELECT * FROM dbo.Customers WHERE CustomerId = {random.Next(0,4)}");
             if(solomonAdviceFound != null){
                 return Results.Ok(solomonAdviceFound);
             }else{

@@ -10,10 +10,8 @@ namespace SolomonsAdviceApi.ByIdAdvice.Endpoints{
         public static Delegate FuncAdviceById => AcaoAdviceById;
         public static IResult AcaoAdviceById([FromRoute] int Id){
             SolomonAdviceRepository adviceRepository = new SolomonAdviceRepository();
-            string founded = adviceRepository.ConsumeDataProverbsBank($"SELECT Advice, Reference FROM dbo.Customers  WHERE CustomerId = {Id}");
-            string [] coluna = new string[3];
-            coluna = founded.Split(",");
-            SolomonAdvice solomonAdviceFound = new SolomonAdvice(coluna[0], coluna[1], Id);
+            SolomonAdvice solomonAdviceFound = adviceRepository.ConsumeDataProverbsBank($"SELECT * FROM dbo.Customers  WHERE CustomerId = {Id}");
+
             if(solomonAdviceFound != null){
                 return Results.Ok(solomonAdviceFound);
             }else{
