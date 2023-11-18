@@ -3,7 +3,7 @@ using SolomonsAdviceApi.Repository;
 using SolomonsAdviceApi.SolomonAdviceClass;
 using System.Linq;
 
-namespace SolomonsAdviceApi.RandomAdvice.Endpoints{
+namespace SolomonsAdviceApi.Endpoints.RandomAdvice{
     public class SolomonsAdviceGet{
         public static string TemplateAdviceRandom => "/advice";
         public static string[] MetodoAdviceRandom => new string[] {HttpMethod.Get.ToString()};
@@ -11,7 +11,7 @@ namespace SolomonsAdviceApi.RandomAdvice.Endpoints{
         public static IResult AcaoAdviceRandom(){
             SolomonAdviceRepository adviceRepository = new SolomonAdviceRepository();
             Random random = new Random();
-            SolomonAdvice solomonAdviceFound = adviceRepository.ConsumeDataProverbsBank($"SELECT * FROM dbo.Customers WHERE CustomerId = {random.Next(0,4)}");
+            SolomonAdvice solomonAdviceFound = adviceRepository.ConsumeUniqueDataProverbsBank($"SELECT * FROM dbo.Verses WHERE VerseId = {random.Next(0,4)}");
             if(solomonAdviceFound != null){
                 return Results.Ok(solomonAdviceFound);
             }else{

@@ -2,7 +2,7 @@ using SolomonsAdviceApi.Repository;
 using SolomonsAdviceApi.SolomonAdviceClass;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SolomonsAdviceApi.ByIdAdvice.Endpoints{
+namespace SolomonsAdviceApi.Endpoints.ByIdAdvice{
     public class SolomonAdviceByIdGet{
   
         public static string TemplateAdviceById => "/advice/{Id:int}";
@@ -10,7 +10,7 @@ namespace SolomonsAdviceApi.ByIdAdvice.Endpoints{
         public static Delegate FuncAdviceById => AcaoAdviceById;
         public static IResult AcaoAdviceById([FromRoute] int Id){
             SolomonAdviceRepository adviceRepository = new SolomonAdviceRepository();
-            SolomonAdvice solomonAdviceFound = adviceRepository.ConsumeDataProverbsBank($"SELECT * FROM dbo.Customers  WHERE CustomerId = {Id}");
+            SolomonAdvice solomonAdviceFound = adviceRepository.ConsumeUniqueDataProverbsBank($"SELECT * FROM dbo.Verses  WHERE VerseId = {Id}");
 
             if(solomonAdviceFound != null){
                 return Results.Ok(solomonAdviceFound);

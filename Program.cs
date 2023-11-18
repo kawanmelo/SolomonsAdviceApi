@@ -1,5 +1,7 @@
-using SolomonsAdviceApi.RandomAdvice.Endpoints;
-using SolomonsAdviceApi.ByIdAdvice.Endpoints;
+using SolomonsAdviceApi.Endpoints.RandomAdvice;
+using SolomonsAdviceApi.Endpoints.ByIdAdvice;
+using SolomonsAdviceApi.Endpoints.ByTextGet;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,4 +22,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapMethods(SolomonsAdviceGet.TemplateAdviceRandom, SolomonsAdviceGet.MetodoAdviceRandom, SolomonsAdviceGet.FuncAdviceRandom);
 app.MapMethods(SolomonAdviceByIdGet.TemplateAdviceById, SolomonAdviceByIdGet.MetodoAdviceById, SolomonAdviceByIdGet.FuncAdviceById);
+app.MapMethods(SolomonAdviceByTextGet.TemplateAdviceByText, SolomonAdviceByTextGet.MetodoAdviceByText, SolomonAdviceByTextGet.FuncAdviceByText);
 app.Run();
