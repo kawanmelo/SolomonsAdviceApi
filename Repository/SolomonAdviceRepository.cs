@@ -1,13 +1,25 @@
 using Microsoft.VisualBasic;
 using SolomonsAdviceApi.SolomonAdviceClass;
 using System.Data.SqlClient;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace SolomonsAdviceApi.Repository{
     public  class SolomonAdviceRepository{
+        private readonly IConfiguration configuration;
+        public SolomonAdviceRepository(){
+            configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+        }
+        
         public SolomonAdvice ConsumeUniqueDataProverbsBank(string SqlQuery, object parameters = null){
             try{
-                string connectionString =  "Data Source=localhost;Initial Catalog=ProverbsDataBank;User ID=sa;Password=SQLmelo.cs;Integrated Security=False;";
+                string connectionString = configuration.GetConnectionString("ProverbsDataBankConnection");
+                if(string.IsNullOrEmpty(connectionString)){
+                    throw new Exception("String de conexão vazia");
+                }
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -38,7 +50,10 @@ namespace SolomonsAdviceApi.Repository{
         public List<SolomonAdvice> ConsumeMutipleDataProverbsBank(string SqlQuery, object parameters = null){
             List<SolomonAdvice> listFound = new List<SolomonAdvice>();
             try{
-                string connectionString =  "Data Source=localhost;Initial Catalog=ProverbsDataBank;User ID=sa;Password=SQLmelo.cs;Integrated Security=False;";;
+                string connectionString = configuration.GetConnectionString("ProverbsDataBankConnection");
+                if(string.IsNullOrEmpty(connectionString)){
+                    throw new Exception("String de conexão vazia");
+                }
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -62,8 +77,10 @@ namespace SolomonsAdviceApi.Repository{
         public bool CUDDataProverbsBank(string sqlQuery, object parameters = null){
             try
             {
-                string connectionString = "Data Source=localhost;Initial Catalog=ProverbsDataBank;User ID=sa;Password=SQLmelo.cs;Integrated Security=False;";
-
+                string connectionString = configuration.GetConnectionString("ProverbsDataBankConnection");
+                if(string.IsNullOrEmpty(connectionString)){
+                    throw new Exception("String de conexão vazia");
+                }
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
