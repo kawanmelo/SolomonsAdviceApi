@@ -1,4 +1,4 @@
-using SolomonsAdviceApi.Repository.CUD;
+using MeloSolution.Repository.CUD;
 using System.Data.SqlClient;
 
 namespace SolomonsAdviceApi.Repository.CUD{

@@ -42,7 +42,6 @@ namespace SolomonsAdviceApi.Repository.Consume{
             }catch(Exception e){
                 Console.WriteLine(e.Message);
             }
-            Console.WriteLine("Bullshit");
             return null;
         }
         public List<SolomonAdvice> ConsumeMutipleVerse(string sqlQuery, object parameters = null){

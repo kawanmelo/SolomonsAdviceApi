@@ -39,7 +39,6 @@ namespace SolomonsAdviceApi.Repository.Consume
             }catch(Exception e){
                 Console.WriteLine(e.Message);
             } 
-            Console.WriteLine("Algo de errado não está certo");
             return value;
         }
         public string ConsumeInfo(string sqlQuery, object parameters = null){
@@ -68,7 +67,6 @@ namespace SolomonsAdviceApi.Repository.Consume
             }catch(Exception e){
                 Console.WriteLine(e.Message);
             } 
-            Console.WriteLine("Algo de errado não está certo");
             return value;
         }
     }
