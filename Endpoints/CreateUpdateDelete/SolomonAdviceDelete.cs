@@ -1,18 +1,19 @@
-using SolomonsAdviceApi.Repository;
-using SolomonsAdviceApi.SolomonAdviceClass;
+using MeloSolution.authenticationAPI.Repository;
+using MeloSolution.SolomonsAdviceApi.Repository;
 using Microsoft.AspNetCore.Mvc;
-using SolomonsAdviceApi.Repository.CUD;
 
 
 namespace SolomonsAdviceApi.Endpoints.AdviceDelete{
     public class SolomonAdviceDelete{
-  
+
+        private static ICud cudSolomonVerse;
         public static string TemplateAdviceDelete => "/advice/{Id:int}";
         public static string[] MetodoAdviceDelete => new string[] {HttpMethod.Delete.ToString()};
         public static Delegate FuncAdviceDelete => AcaoAdviceDelete;
         public static IResult AcaoAdviceDelete([FromRoute] int id){
-            CudSolomonVerse cudSolomonVerse = new CudSolomonVerse();
-            bool persistenceConference = cudSolomonVerse.CudObject("DELETE FROM dbo.Verses WHERE VerseId = @IdVerse", new {IdVerse = id});
+            cudSolomonVerse = new CudSolomonVerse();
+            bool persistenceConference = cudSolomonVerse.CudObject("DELETE FROM dbo.Verses WHERE VerseId = @IdVerse",
+            new {IdVerse = id});
             if(persistenceConference){
                 return Results.NoContent();
             }else{

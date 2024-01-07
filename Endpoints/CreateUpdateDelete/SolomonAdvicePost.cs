@@ -1,13 +1,16 @@
-using SolomonsAdviceApi.SolomonAdviceClass;
+using MeloSolution.SolomonsAdviceApi.Repository;
+using MeloSolution.SolomonsAdviceApi.Entities;
+using MeloSolution.authenticationAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
-using SolomonsAdviceApi.Repository.CUD;
-using SolomonsAdviceApi.Repository.Consume;
 
 
 namespace SolomonsAdviceApi.Endpoints.AdvicePost{
     public class SolomonAdvicePost{
-  
+
+        private static ICud cudSolomonVerse;
+        private static IConsumeData consumeData;
+        private static IConsumeObject consumeVerse;
         public static string TemplateAdvicePost => "/advice/";
         public static string[] MetodoAdvicePost => new string[] {HttpMethod.Post.ToString()};
         public static Delegate FuncAdvicePost => AcaoAdvicePost;
@@ -15,15 +18,16 @@ namespace SolomonsAdviceApi.Endpoints.AdvicePost{
             if(solomonAdvice == null){
                 return Results.BadRequest();
             }
-            CudSolomonVerse cudSolomonVerse = new CudSolomonVerse();
-            ConsumeData consumeData = new ConsumeData();
-            ConsumeVerse consumeVerse = new ConsumeVerse();
+            cudSolomonVerse = new CudSolomonVerse();
+            consumeData = new ConsumeData();
+            consumeVerse = new ConsumeVerse();
             bool persistenceConference = cudSolomonVerse.CudObject("INSERT INTO dbo.Verses (Advice, Reference) VALUES (@Advice, @Reference)",
                 new { Advice = solomonAdvice.Advice, Reference = solomonAdvice.Reference});
                 if(persistenceConference){
                     try{
                         int id = consumeData.ConsumeInfoInteger("SELECT MAX(VerseId) FROM dbo.Verses");
-                        SolomonAdvice solomonAdviceFound = consumeVerse.ConsumeUniqueVerse($"SELECT * FROM dbo.Verses  WHERE VerseId = {id}");
+                        var solomonAdviceFound = consumeVerse.ConsumeUniqueObject("SELECT * FROM dbo.Verses  WHERE VerseId = @VerseId",
+                        new{ VerseId = id });
                         return Results.Created($"https://localhost:7120/advice/{id}",solomonAdviceFound);
                             
                     }catch(SqlException e){

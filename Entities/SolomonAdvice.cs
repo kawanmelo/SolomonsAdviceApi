@@ -1,4 +1,4 @@
-namespace SolomonsAdviceApi.SolomonAdviceClass{
+namespace MeloSolution.SolomonsAdviceApi.Entities{
     public class SolomonAdvice{
         public int Id{
             get; set;

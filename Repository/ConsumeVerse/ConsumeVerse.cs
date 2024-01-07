@@ -1,9 +1,9 @@
-using SolomonsAdviceApi.Repository.CreateObject;
-using SolomonsAdviceApi.SolomonAdviceClass;
+using MeloSolution.SolomonsAdviceApi.Entities;
 using System.Data.SqlClient;
+using MeloSolution.authenticationAPI.Repository;
 
-namespace SolomonsAdviceApi.Repository.Consume{
-    public class ConsumeVerse:IConsumeVerse{
+namespace MeloSolution.SolomonsAdviceApi.Repository{
+    public class ConsumeVerse:IConsumeObject{
         private readonly IConfiguration configuration;
         private readonly CreateSolomonAdvice createSolomonAdvice;
         public ConsumeVerse(){
@@ -14,7 +14,7 @@ namespace SolomonsAdviceApi.Repository.Consume{
 
             createSolomonAdvice = new CreateSolomonAdvice();
         }
-        public SolomonAdvice ConsumeUniqueVerse(string sqlQuery, object parameters = null){
+        public object ConsumeUniqueObject(string sqlQuery, object parameters = null){
             try{
                 string connectionString = configuration.GetConnectionString("ProverbsDataBankConnection");
                 if(string.IsNullOrEmpty(connectionString)){
@@ -23,12 +23,12 @@ namespace SolomonsAdviceApi.Repository.Consume{
                 using(SqlConnection sqlConnection = new SqlConnection(connectionString)){
                 sqlConnection.Open();
                     using(SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection)){
-                        using(SqlDataReader sqlDataReader = sqlCommand.ExecuteReader()){
-                            if(parameters != null){
+                        if(parameters != null){
                                 foreach(var prop in parameters.GetType().GetProperties()){
                                     sqlCommand.Parameters.AddWithValue("@" + prop.Name, prop.GetValue(parameters));
                                 }
                             }
+                        using(SqlDataReader sqlDataReader = sqlCommand.ExecuteReader()){
                             while(sqlDataReader.Read()){
                                 int Id = sqlDataReader.GetInt32(0);
                                 string Advice = sqlDataReader.GetString(1);
@@ -44,8 +44,8 @@ namespace SolomonsAdviceApi.Repository.Consume{
             }
             return null;
         }
-        public List<SolomonAdvice> ConsumeMutipleVerse(string sqlQuery, object parameters = null){
-            List<SolomonAdvice> values = new List<SolomonAdvice>();
+        public List<object> ConsumeMultipleObject(string sqlQuery, object parameters = null){
+            List<object> values = new List<object>();
             try{
                 string connectionString = configuration.GetConnectionString("ProverbsDataBankConnection");
                 if(String.IsNullOrEmpty(connectionString)){
@@ -54,12 +54,12 @@ namespace SolomonsAdviceApi.Repository.Consume{
                 using(SqlConnection sqlConnection = new SqlConnection(connectionString)){
                     sqlConnection.Open();
                     using(SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection)){
-                        using(SqlDataReader sqlDataReader = sqlCommand.ExecuteReader()){
-                            if(parameters != null){
+                        if(parameters != null){
                                 foreach(var prop in parameters.GetType().GetProperties()){
                                     sqlCommand.Parameters.AddWithValue("@" + prop.Name, prop.GetValue(parameters));
                                 }
                             }
+                        using(SqlDataReader sqlDataReader = sqlCommand.ExecuteReader()){
                             while(sqlDataReader.Read()){
                                 int Id = sqlDataReader.GetInt32(0);
                                 string Advice = sqlDataReader.GetString(1);

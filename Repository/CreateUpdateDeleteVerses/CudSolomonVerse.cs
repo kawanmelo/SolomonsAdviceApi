@@ -1,7 +1,7 @@
-using MeloSolution.Repository.CUD;
 using System.Data.SqlClient;
+using MeloSolution.authenticationAPI.Repository;
 
-namespace SolomonsAdviceApi.Repository.CUD{
+namespace MeloSolution.SolomonsAdviceApi.Repository{
     public class CudSolomonVerse:ICud{
         private readonly IConfiguration configuration;
         public CudSolomonVerse(){
